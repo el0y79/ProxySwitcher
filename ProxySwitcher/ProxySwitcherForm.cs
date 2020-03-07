@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using ProxySwitcher.Properties;
 
 namespace ProxySwitcher
 {
@@ -92,6 +94,7 @@ namespace ProxySwitcher
             foreach (var config in configuration.Proxies)
             {
                 var button = new ToolStripMenuItem(config.Name);
+                button.Image = Resources.entry;
                 button.Click += Button_Click;
                 contextMenuStrip1.Items.Add(button);
             }
@@ -99,8 +102,10 @@ namespace ProxySwitcher
             contextMenuStrip1.Items.Add(new ToolStripSeparator());
             var exitButton = new ToolStripMenuItem("Exit");
             exitButton.Click += ExitButton_Click;
+            exitButton.Image = Resources.exit;
             var settingsButton = new ToolStripMenuItem("Settings");
             settingsButton.Click += mnuSettings_Click;
+            settingsButton.Image = Resources.settings;
             contextMenuStrip1.Items.Add(settingsButton);
             contextMenuStrip1.Items.Add(exitButton);
         }

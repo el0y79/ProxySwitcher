@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DlgSettings));
             this.lstConfigurations = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -172,6 +173,7 @@
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstConfigurations);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DlgSettings";
             this.Text = "DlgSettings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DlgSettings_FormClosing);
