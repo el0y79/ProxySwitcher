@@ -91,14 +91,17 @@ namespace ProxySwitcher
             contextMenuStrip1.Items.Clear();
             foreach (var config in configuration.Proxies)
             {
-                var button = new ToolStripButton(config.Name);
+                var button = new ToolStripMenuItem(config.Name);
                 button.Click += Button_Click;
                 contextMenuStrip1.Items.Add(button);
             }
 
             contextMenuStrip1.Items.Add(new ToolStripSeparator());
-            var exitButton = new ToolStripButton("Exit");
+            var exitButton = new ToolStripMenuItem("Exit");
             exitButton.Click += ExitButton_Click;
+            var settingsButton = new ToolStripMenuItem("Settings");
+            settingsButton.Click += mnuSettings_Click;
+            contextMenuStrip1.Items.Add(settingsButton);
             contextMenuStrip1.Items.Add(exitButton);
         }
 
@@ -156,6 +159,7 @@ namespace ProxySwitcher
         {
             if (exiting)
             {
+                trayIcon.Visible = false;
                 return;
             }
             e.Cancel = true;
