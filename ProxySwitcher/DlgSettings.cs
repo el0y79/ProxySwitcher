@@ -17,13 +17,15 @@ namespace ProxySwitcher
         private void LoadConfiguration()
         {
             Configuration=loader.LoadConfiguration();
-            UpdateList();
+            UpdateDialog();
         }
 
-        private void UpdateList()
+        private void UpdateDialog()
         {
             lstConfigurations.Items.Clear();
             Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(x));
+            chkAutoUpdate.Checked = Configuration.AutoUpdate;
+            chkConsiderWinHTTP.Checked = Configuration.ConsiderWinHTTP;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -54,7 +56,7 @@ namespace ProxySwitcher
                     Proxy = txtProxy.Text
                 };
                 Configuration.Proxies.Add(config);
-                UpdateList();
+                UpdateDialog();
             }
         }
 
