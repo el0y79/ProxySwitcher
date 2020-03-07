@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TelegramUtils;
 
@@ -7,22 +8,29 @@ namespace ProxySwitcher
     public class ConfigurationLoader
     {
         private string fileName = "configurations.json";
-        public List<ProxyConfig> LoadConfiguration()
+        private JsonAdapter<Configuration> jsonAdapter = new JsonAdapter<Configuration>();
+
+        public Configuration LoadConfiguration()
         {
-            List<ProxyConfig> configurations = new List<ProxyConfig>();
             if (!File.Exists(fileName))
-                return new List<ProxyConfig>();
-            JsonAdapter<List<ProxyConfig>> jsonAdapter = new JsonAdapter<List<ProxyConfig>>();
-            configurations.Clear();
-            configurations.AddRange(jsonAdapter.Restore(File.ReadAllText(fileName)));
-            return configurations;
+                return new Configuration();
+            try
+            {
+                return jsonAdapter.Restore(File.ReadAllText(fileName)) ?? new Configuration();
+            }
+            catch (Exception exception)
+            {
+                Console.Out.WriteLine("xxx");
+                // ignored
+            }
+
+            return new Configuration();
         }
 
-        public void SaveConfiguration(List<ProxyConfig> configurations)
+        public void SaveConfiguration(Configuration configuration)
         {
-            JsonAdapter<List<ProxyConfig>> jsonAdapter = new JsonAdapter<List<ProxyConfig>>();
-            File.WriteAllText(fileName, jsonAdapter.Dump(configurations));
-
+            JsonAdapter<Configuration> jsonAdapter = new JsonAdapter<Configuration>();
+            File.WriteAllText(fileName, jsonAdapter.Dump(configuration));
         }
 
     }

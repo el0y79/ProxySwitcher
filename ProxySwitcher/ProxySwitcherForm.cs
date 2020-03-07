@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -18,27 +12,34 @@ namespace ProxySwitcher
     public partial class ProxySwitcherForm : Form
     {
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
+        private Configuration configuration;
         private bool exiting = false;
 
         [DllImport("wininet.dll")]
         public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
         public const int INTERNET_OPTION_SETTINGS_CHANGED = 39;
         public const int INTERNET_OPTION_REFRESH = 37;
+
         public ProxySwitcherForm()
         {
             InitializeComponent();
+            configuration = configurationLoader.LoadConfiguration();
             NetworkChange.NetworkAddressChanged += OnNetworkChanged;
         }
 
         private void OnNetworkChanged(object sender, EventArgs e)
         {
+            if (!configuration.AutoUpdate)
+            {
+                return;
+            }
             try
             {
                 NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-                List<ProxyConfig> configuration = configurationLoader.LoadConfiguration();
                 foreach (NetworkInterface networkInterface in adapters)
                 {
-                    if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4) || networkInterface.OperationalStatus != OperationalStatus.Up)
+                    if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4)
+                        || networkInterface.OperationalStatus != OperationalStatus.Up)
                     {
                         continue;
                     }
@@ -48,7 +49,7 @@ namespace ProxySwitcher
                     {
                         var ip = address.Address;
                         var ipString = ip.ToString();
-                        foreach (var config in configuration)
+                        foreach (var config in configuration.Proxies)
                         {
                             if (Regex.IsMatch(ipString, config.OwnIP))
                             {
@@ -82,14 +83,13 @@ namespace ProxySwitcher
         {
             DlgSettings settings = new DlgSettings();
             settings.ShowDialog();
+            configuration = settings.Configuration;
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             contextMenuStrip1.Items.Clear();
-            ConfigurationLoader loader = new ConfigurationLoader();
-            var cfg = loader.LoadConfiguration();
-            foreach (var config in cfg)
+            foreach (var config in configuration.Proxies)
             {
                 var button = new ToolStripButton(config.Name);
                 button.Click += Button_Click;
@@ -110,8 +110,7 @@ namespace ProxySwitcher
 
         private void Button_Click(object sender, EventArgs e)
         {
-            var cfg = configurationLoader.LoadConfiguration();
-            var match = cfg.FirstOrDefault(x => ((ToolStripButton)sender).Text.Equals(x.Name));
+            var match = configuration.GetByName(((ToolStripButton)sender).Text);
             ApplyProxy(match);
         }
 
@@ -131,8 +130,12 @@ namespace ProxySwitcher
                 registry.SetValue("ProxyEnable", 1);
                 registry.SetValue("ProxyServer", matchProxy.Proxy);
             }
-            Process process = Process.Start("netsh", cmd);
-            process.WaitForExit();
+
+            if (configuration.ConsiderWinHTTP)
+            {
+                Process process = Process.Start("netsh", cmd);
+                process.WaitForExit();
+            }
 
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);

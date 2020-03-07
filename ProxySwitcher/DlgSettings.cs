@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TelegramUtils;
 
 namespace ProxySwitcher
 {
     public partial class DlgSettings : Form
     {
-        public List<ProxyConfig> Configurations { get; } = new List<ProxyConfig>();
+        public Configuration Configuration { get; private set; }
         ConfigurationLoader loader = new ConfigurationLoader();
         public DlgSettings()
         {
@@ -24,15 +16,14 @@ namespace ProxySwitcher
 
         private void LoadConfiguration()
         {
-            Configurations.Clear();
-            Configurations.AddRange(loader.LoadConfiguration());
+            Configuration=loader.LoadConfiguration();
             UpdateList();
         }
 
         private void UpdateList()
         {
             lstConfigurations.Items.Clear();
-            Configurations.ForEach(x => lstConfigurations.Items.Add(x));
+            Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(x));
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -48,7 +39,7 @@ namespace ProxySwitcher
                 return;
             }
 
-            var config = Configurations.FirstOrDefault(x => x.Name.Equals(txtName.Text));
+            var config = Configuration.Proxies.FirstOrDefault(x => x.Name.Equals(txtName.Text));
             if (config != null)
             {
                 config.OwnIP = txtOwnIP.Text;
@@ -62,7 +53,7 @@ namespace ProxySwitcher
                     OwnIP = txtOwnIP.Text,
                     Proxy = txtProxy.Text
                 };
-                Configurations.Add(config);
+                Configuration.Proxies.Add(config);
                 UpdateList();
             }
         }
@@ -75,7 +66,7 @@ namespace ProxySwitcher
             }
 
             ProxyConfig config = (ProxyConfig)lstConfigurations.SelectedItem;
-            Configurations.Remove(config);
+            Configuration.Proxies.Remove(config);
             lstConfigurations.Items.Remove(config);
         }
 
@@ -93,7 +84,17 @@ namespace ProxySwitcher
 
         private void DlgSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            loader.SaveConfiguration(Configurations);
+            loader.SaveConfiguration(Configuration);
+        }
+
+        private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.AutoUpdate = chkAutoUpdate.Checked;
+        }
+
+        private void chkConsiderWinHTTP_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.ConsiderWinHTTP = chkConsiderWinHTTP.Checked;
         }
     }
 }

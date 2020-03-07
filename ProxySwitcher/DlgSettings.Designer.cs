@@ -37,6 +37,9 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.txtProxy = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.chkAutoUpdate = new System.Windows.Forms.CheckBox();
+            this.chkConsiderWinHTTP = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lstConfigurations
@@ -71,7 +74,7 @@
             // 
             this.btnSave.Location = new System.Drawing.Point(255, 117);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(352, 28);
+            this.btnSave.Size = new System.Drawing.Size(352, 34);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -95,9 +98,9 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(255, 151);
+            this.btnRemove.Location = new System.Drawing.Point(255, 157);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(352, 28);
+            this.btnRemove.Size = new System.Drawing.Size(352, 34);
             this.btnRemove.TabIndex = 6;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -119,11 +122,47 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Proxy:";
             // 
+            // chkAutoUpdate
+            // 
+            this.chkAutoUpdate.AutoSize = true;
+            this.chkAutoUpdate.Location = new System.Drawing.Point(255, 197);
+            this.chkAutoUpdate.Name = "chkAutoUpdate";
+            this.chkAutoUpdate.Size = new System.Drawing.Size(126, 24);
+            this.chkAutoUpdate.TabIndex = 9;
+            this.chkAutoUpdate.Text = "Auto Update";
+            this.chkAutoUpdate.UseVisualStyleBackColor = true;
+            this.chkAutoUpdate.CheckedChanged += new System.EventHandler(this.chkAutoUpdate_CheckedChanged);
+            // 
+            // chkConsiderWinHTTP
+            // 
+            this.chkConsiderWinHTTP.AutoSize = true;
+            this.chkConsiderWinHTTP.Location = new System.Drawing.Point(255, 227);
+            this.chkConsiderWinHTTP.Name = "chkConsiderWinHTTP";
+            this.chkConsiderWinHTTP.Size = new System.Drawing.Size(163, 24);
+            this.chkConsiderWinHTTP.TabIndex = 10;
+            this.chkConsiderWinHTTP.Text = "WinHTTP Support";
+            this.chkConsiderWinHTTP.UseVisualStyleBackColor = true;
+            this.chkConsiderWinHTTP.CheckedChanged += new System.EventHandler(this.chkConsiderWinHTTP_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(424, 227);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(183, 30);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "WinHTTP Support will only work \r\nwhen run as Administrator";
+            // 
             // DlgSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(621, 274);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.chkConsiderWinHTTP);
+            this.Controls.Add(this.chkAutoUpdate);
             this.Controls.Add(this.txtProxy);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnRemove);
@@ -152,5 +191,8 @@
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.TextBox txtProxy;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox chkAutoUpdate;
+        private System.Windows.Forms.CheckBox chkConsiderWinHTTP;
+        private System.Windows.Forms.Label label4;
     }
 }
