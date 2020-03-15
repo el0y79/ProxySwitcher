@@ -22,7 +22,8 @@ namespace ProxySwitcher
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
         private Configuration configuration;
         private bool exiting = false;
-        private TimeSpan delay = TimeSpan.FromSeconds(5);
+        private int retries = 10;
+        private TimeSpan delay = TimeSpan.FromSeconds(1);
 
         [DllImport("wininet.dll")]
         public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
@@ -40,8 +41,11 @@ namespace ProxySwitcher
         {
             Task.Run(() =>
             {
-                Thread.Sleep(delay);
-                OnNetworkChanged(sender, e);
+                for (int i = 0; i < retries; i++)
+                {
+                    OnNetworkChanged();
+                    Thread.Sleep(delay);
+                }
             });
         }
 
@@ -100,7 +104,7 @@ namespace ProxySwitcher
             }
         }
 
-        private void OnNetworkChanged(object sender, EventArgs e)
+        private void OnNetworkChanged()
         {
             if (!configuration.AutoUpdate)
             {
@@ -237,12 +241,12 @@ namespace ProxySwitcher
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            OnNetworkChanged(null, null);
+            OnNetworkChanged();
         }
 
         private void ProxySwitcherForm_Load(object sender, EventArgs e)
         {
-            OnNetworkChanged(null, null);
+            OnNetworkChanged();
         }
 
         private void ProxySwitcherForm_FormClosing(object sender, FormClosingEventArgs e)
