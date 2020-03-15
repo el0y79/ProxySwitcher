@@ -2,12 +2,18 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using ProxySwitcher.Properties;
+using Timer = System.Timers.Timer;
 
 namespace ProxySwitcher
 {
@@ -16,6 +22,7 @@ namespace ProxySwitcher
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
         private Configuration configuration;
         private bool exiting = false;
+        private TimeSpan delay = TimeSpan.FromSeconds(5);
 
         [DllImport("wininet.dll")]
         public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
@@ -26,7 +33,71 @@ namespace ProxySwitcher
         {
             InitializeComponent();
             configuration = configurationLoader.LoadConfiguration();
-            NetworkChange.NetworkAddressChanged += OnNetworkChanged;
+            NetworkChange.NetworkAddressChanged += OnNetworkChangedEventHandler;
+        }
+
+        private void OnNetworkChangedEventHandler(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                Thread.Sleep(delay);
+                OnNetworkChanged(sender, e);
+            });
+        }
+
+        private string GetLocalEndPoint(string proxy)
+        {
+            IPHostEntry entry = null;
+            try
+            {
+                Uri uri = null;
+                if (!Uri.TryCreate("http://" + proxy, UriKind.Absolute, out uri))
+                {
+                    return null;
+                }
+
+                entry = Dns.GetHostEntry(uri.Host);
+            }
+            catch (Exception exc)
+            {
+                entry = null;
+            }
+
+            if (entry == null || !entry.AddressList.Any())
+            {
+                return null;
+            }
+
+            try
+            {
+                IPAddress remoteIp = entry.AddressList.First().MapToIPv4();
+                IPEndPoint remoteEndPoint = new IPEndPoint(remoteIp, 0);
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                SocketAddress address = remoteEndPoint.Serialize();
+
+                byte[] remoteAddrBytes = new byte[address.Size];
+                for (int i = 0; i < address.Size; i++)
+                {
+                    remoteAddrBytes[i] = address[i];
+                }
+
+                byte[] outBytes = new byte[remoteAddrBytes.Length];
+                socket.IOControl(
+                    IOControlCode.RoutingInterfaceQuery,
+                    remoteAddrBytes,
+                    outBytes);
+                for (int i = 0; i < address.Size; i++)
+                {
+                    address[i] = outBytes[i];
+                }
+
+                EndPoint ep = remoteEndPoint.Create(address);
+                return ((IPEndPoint)ep).Address.ToString();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         private void OnNetworkChanged(object sender, EventArgs e)
@@ -41,7 +112,8 @@ namespace ProxySwitcher
                 foreach (NetworkInterface networkInterface in adapters)
                 {
                     if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4)
-                        || networkInterface.OperationalStatus != OperationalStatus.Up)
+                        || networkInterface.OperationalStatus != OperationalStatus.Up
+                        || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
                     {
                         continue;
                     }
@@ -55,6 +127,18 @@ namespace ProxySwitcher
                         {
                             if (Regex.IsMatch(ipString, config.OwnIP))
                             {
+                                if (!string.IsNullOrEmpty(config.Proxy))
+                                {
+                                    string localEndPoint = GetLocalEndPoint(config.Proxy);
+                                    if (string.IsNullOrEmpty(localEndPoint))
+                                    {
+                                        continue; //ip matches but cannot be reached by that interface
+                                    }
+                                    if (!Regex.IsMatch(localEndPoint, config.OwnIP))
+                                    {
+                                        continue; //wrong interface
+                                    }
+                                }
                                 ApplyProxy(config);
                                 return;
                             }
@@ -69,6 +153,7 @@ namespace ProxySwitcher
                 ApplyProxy(null);
             }
         }
+
 
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -118,7 +203,7 @@ namespace ProxySwitcher
 
         private void Button_Click(object sender, EventArgs e)
         {
-            var match = configuration.GetByName(((ToolStripButton)sender).Text);
+            var match = configuration.GetByName(((ToolStripItem)sender).Text);
             ApplyProxy(match);
         }
 
