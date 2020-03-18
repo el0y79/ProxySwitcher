@@ -161,7 +161,9 @@ namespace ProxySwitcher
 
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            this.Visible = true;
             WindowState = FormWindowState.Normal;
+            this.BringToFront();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -258,6 +260,7 @@ namespace ProxySwitcher
             }
             e.Cancel = true;
             WindowState = FormWindowState.Minimized;
+            this.Visible = false;
         }
     }
 }
