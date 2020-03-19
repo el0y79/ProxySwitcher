@@ -24,6 +24,7 @@ namespace ProxySwitcher
         private bool exiting = false;
         private int retries = 10;
         private TimeSpan delay = TimeSpan.FromSeconds(1);
+        private event Action<ProxyConfig> OnConfigChanged;
 
         [DllImport("wininet.dll")]
         public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
@@ -35,6 +36,22 @@ namespace ProxySwitcher
             InitializeComponent();
             configuration = configurationLoader.LoadConfiguration();
             NetworkChange.NetworkAddressChanged += OnNetworkChangedEventHandler;
+            OnConfigChanged += ProxySwitcherForm_OnConfigChanged;
+        }
+
+        private void ProxySwitcherForm_OnConfigChanged(ProxyConfig newConfig)
+        {
+            var newLabelText = newConfig?.Name ?? "None";
+            if (newLabelText.Equals(lblCurrentConfig.Text))
+            {
+                return;
+            }
+
+            lblCurrentConfig.Text = newLabelText;
+            trayIcon.Text = "Current Config: " + lblCurrentConfig.Text;
+            trayIcon.BalloonTipTitle = "Network Change";
+            trayIcon.BalloonTipText = $"New Proxy Config: {newLabelText}";
+            trayIcon.ShowBalloonTip(2000);
         }
 
         private void OnNetworkChangedEventHandler(object sender, EventArgs e)
@@ -238,7 +255,10 @@ namespace ProxySwitcher
 
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
             InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
-            Invoke(new Action(() => lblCurrentConfig.Text = matchProxy?.Name ?? "None"));
+            Invoke(new Action(() =>
+            {
+                FireOnConfigChanged(matchProxy);
+            }));
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -262,5 +282,11 @@ namespace ProxySwitcher
             WindowState = FormWindowState.Minimized;
             this.Visible = false;
         }
+
+        private void FireOnConfigChanged(ProxyConfig newConfig)
+        {
+            OnConfigChanged?.Invoke(newConfig);
+        }
+
     }
 }
