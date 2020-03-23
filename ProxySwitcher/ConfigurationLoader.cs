@@ -7,7 +7,7 @@ namespace ProxySwitcher
 {
     public class ConfigurationLoader
     {
-        private string fileName = "configurations.json";
+        private string fileName => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "configurations.json");
         private JsonAdapter<Configuration> jsonAdapter = new JsonAdapter<Configuration>();
 
         public Configuration LoadConfiguration()
