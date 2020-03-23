@@ -144,7 +144,7 @@ namespace ProxySwitcher
                     {
                         var ip = address.Address;
                         var ipString = ip.ToString();
-                        foreach (var config in configuration.Proxies)
+                        foreach (var config in configuration.Proxies.OrderByDescending(x=>x.Proxy))
                         {
                             if (Regex.IsMatch(ipString, config.OwnIP))
                             {
