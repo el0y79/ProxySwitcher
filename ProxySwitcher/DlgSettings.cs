@@ -24,8 +24,11 @@ namespace ProxySwitcher
         {
             lstConfigurations.Items.Clear();
             Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(x));
+            
             chkAutoUpdate.Checked = Configuration.AutoUpdate;
+            chkCyclicChecking.Checked = Configuration.CyclicCheck;
             chkConsiderWinHTTP.Checked = Configuration.ConsiderWinHTTP;
+            txtRetrytimeAfterEvent.Text = Configuration.RetryTimeSec.ToString();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -107,7 +110,20 @@ namespace ProxySwitcher
 
         private void chkCyclicChecking_CheckedChanged(object sender, EventArgs e)
         {
+            Configuration.CyclicCheck = chkCyclicChecking.Checked;
             txtRetrytimeAfterEvent.Enabled = !chkCyclicChecking.Checked;
+        }
+
+        private void txtRetrytimeAfterEvent_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtRetrytimeAfterEvent.Text))
+            {
+                Configuration.RetryTimeSec = 0;
+                return;
+            }
+
+            int.TryParse(txtRetrytimeAfterEvent.Text, out var retryTime);
+            Configuration.RetryTimeSec = retryTime;
         }
     }
 }

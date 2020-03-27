@@ -20,10 +20,25 @@ namespace ProxySwitcher
     public partial class ProxySwitcherForm : Form
     {
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
+
         private Configuration configuration;
+
+        private Configuration Configuration
+        {
+            get => configuration;
+            set
+            {
+                configuration = value;
+                //we need to evaluate the cyclic check flag. if its set
+                //we need to setup the timer. If it doesnt we need to stop the timer
+                cyclicCheckTimer.Enabled = configuration.CyclicCheck;
+            }
+        }
+
         private bool exiting = false;
-        private int retries = 10;
         private TimeSpan delay = TimeSpan.FromSeconds(1);
+        private TimeSpan cyclícCheckInterval = TimeSpan.FromSeconds(10);
+        private object threadLock = new object();
         private event Action<ProxyConfig> OnConfigChanged;
 
         [DllImport("wininet.dll")]
@@ -34,7 +49,8 @@ namespace ProxySwitcher
         public ProxySwitcherForm()
         {
             InitializeComponent();
-            configuration = configurationLoader.LoadConfiguration();
+            cyclicCheckTimer.Interval = (int)cyclícCheckInterval.TotalMilliseconds;
+            Configuration = configurationLoader.LoadConfiguration();
             NetworkChange.NetworkAddressChanged += OnNetworkChangedEventHandler;
             OnConfigChanged += ProxySwitcherForm_OnConfigChanged;
         }
@@ -58,7 +74,7 @@ namespace ProxySwitcher
         {
             Task.Run(() =>
             {
-                for (int i = 0; i < retries; i++)
+                for (int i = 0; i < (Configuration.CyclicCheck ? 1 : Configuration.RetryTimeSec); i++)
                 {
                     OnNetworkChanged();
                     Thread.Sleep(delay);
@@ -123,55 +139,62 @@ namespace ProxySwitcher
 
         private void OnNetworkChanged()
         {
-            if (!configuration.AutoUpdate)
+            if (!Configuration.AutoUpdate)
             {
                 return;
             }
-            try
-            {
-                NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
-                foreach (NetworkInterface networkInterface in adapters)
-                {
-                    if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4)
-                        || networkInterface.OperationalStatus != OperationalStatus.Up
-                        || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
-                    {
-                        continue;
-                    }
 
-                    var properties = networkInterface.GetIPProperties();
-                    foreach (var address in properties.UnicastAddresses)
+            lock (threadLock)
+            {
+                try
+                {
+                    NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+                    foreach (NetworkInterface networkInterface in adapters)
                     {
-                        var ip = address.Address;
-                        var ipString = ip.ToString();
-                        foreach (var config in configuration.Proxies.OrderByDescending(x=>x.Proxy))
+                        if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4)
+                            || networkInterface.OperationalStatus != OperationalStatus.Up
+                            || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
                         {
-                            if (Regex.IsMatch(ipString, config.OwnIP))
+                            continue;
+                        }
+
+                        var properties = networkInterface.GetIPProperties();
+                        foreach (var address in properties.UnicastAddresses)
+                        {
+                            var ip = address.Address;
+                            var ipString = ip.ToString();
+                            foreach (var config in Configuration.Proxies.OrderByDescending(x => x.Proxy))
                             {
-                                if (!string.IsNullOrEmpty(config.Proxy))
+                                if (Regex.IsMatch(ipString, config.OwnIP))
                                 {
-                                    string localEndPoint = GetLocalEndPoint(config.Proxy);
-                                    if (string.IsNullOrEmpty(localEndPoint))
+                                    if (!string.IsNullOrEmpty(config.Proxy))
                                     {
-                                        continue; //ip matches but cannot be reached by that interface
+                                        string localEndPoint = GetLocalEndPoint(config.Proxy);
+                                        if (string.IsNullOrEmpty(localEndPoint))
+                                        {
+                                            continue; //ip matches but cannot be reached by that interface
+                                        }
+
+                                        if (!Regex.IsMatch(localEndPoint, config.OwnIP))
+                                        {
+                                            continue; //wrong interface
+                                        }
                                     }
-                                    if (!Regex.IsMatch(localEndPoint, config.OwnIP))
-                                    {
-                                        continue; //wrong interface
-                                    }
+
+                                    ApplyProxy(config);
+                                    return;
                                 }
-                                ApplyProxy(config);
-                                return;
                             }
                         }
                     }
+
+                    ApplyProxy(null);
                 }
-                ApplyProxy(null);
-            }
-            catch (Exception exc)
-            {
-                //noop
-                ApplyProxy(null);
+                catch (Exception exc)
+                {
+                    //noop
+                    ApplyProxy(null);
+                }
             }
         }
 
@@ -193,13 +216,13 @@ namespace ProxySwitcher
         {
             DlgSettings settings = new DlgSettings();
             settings.ShowDialog();
-            configuration = settings.Configuration;
+            Configuration = settings.Configuration;
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             contextMenuStrip1.Items.Clear();
-            foreach (var config in configuration.Proxies)
+            foreach (var config in Configuration.Proxies)
             {
                 var button = new ToolStripMenuItem(config.Name);
                 button.Image = Resources.entry;
@@ -226,7 +249,7 @@ namespace ProxySwitcher
 
         private void Button_Click(object sender, EventArgs e)
         {
-            var match = configuration.GetByName(((ToolStripItem)sender).Text);
+            var match = Configuration.GetByName(((ToolStripItem)sender).Text);
             ApplyProxy(match);
         }
 
@@ -247,7 +270,7 @@ namespace ProxySwitcher
                 registry.SetValue("ProxyServer", matchProxy.Proxy);
             }
 
-            if (configuration.ConsiderWinHTTP)
+            if (Configuration.ConsiderWinHTTP)
             {
                 Process process = Process.Start("netsh", cmd);
                 process.WaitForExit();
@@ -276,6 +299,7 @@ namespace ProxySwitcher
             if (exiting)
             {
                 trayIcon.Visible = false;
+                cyclicCheckTimer.Enabled = false;
                 return;
             }
             e.Cancel = true;
@@ -288,5 +312,9 @@ namespace ProxySwitcher
             OnConfigChanged?.Invoke(newConfig);
         }
 
+        private void cyclicCheckTimer_Tick(object sender, EventArgs e)
+        {
+            Task.Run(() => OnNetworkChanged());
+        }
     }
 }

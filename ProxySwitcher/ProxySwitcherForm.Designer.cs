@@ -39,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblCurrentConfig = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
+            this.cyclicCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,6 +123,10 @@
             this.btnUpdate.UseVisualStyleBackColor = true;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
+            // cyclicCheckTimer
+            // 
+            this.cyclicCheckTimer.Tick += new System.EventHandler(this.cyclicCheckTimer_Tick);
+            // 
             // ProxySwitcherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -159,6 +164,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblCurrentConfig;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Timer cyclicCheckTimer;
     }
 }
 

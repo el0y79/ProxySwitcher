@@ -215,6 +215,7 @@
             this.txtRetrytimeAfterEvent.TabIndex = 8;
             this.txtRetrytimeAfterEvent.Text = "10";
             this.helpTooltip.SetToolTip(this.txtRetrytimeAfterEvent, resources.GetString("txtRetrytimeAfterEvent.ToolTip"));
+            this.txtRetrytimeAfterEvent.TextChanged += new System.EventHandler(this.txtRetrytimeAfterEvent_TextChanged);
             // 
             // DlgSettings
             // 
