@@ -92,11 +92,22 @@ namespace ProxySwitcher
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
         {
             Configuration.AutoUpdate = chkAutoUpdate.Checked;
+            chkCyclicChecking.Enabled = chkAutoUpdate.Checked;
+            txtRetrytimeAfterEvent.Enabled = chkAutoUpdate.Checked;
+            if(!chkAutoUpdate.Checked)
+            {
+                chkCyclicChecking.Checked = false;
+            }
         }
 
         private void chkConsiderWinHTTP_CheckedChanged(object sender, EventArgs e)
         {
             Configuration.ConsiderWinHTTP = chkConsiderWinHTTP.Checked;
+        }
+
+        private void chkCyclicChecking_CheckedChanged(object sender, EventArgs e)
+        {
+            txtRetrytimeAfterEvent.Enabled = !chkCyclicChecking.Checked;
         }
     }
 }
