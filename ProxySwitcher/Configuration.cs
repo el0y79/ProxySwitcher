@@ -10,7 +10,8 @@ namespace ProxySwitcher
         public bool CyclicCheck { get; set; } = false;
         public int RetryTimeSec { get; set; } = 10;
         public bool ConsiderWinHTTP { get; set; } = true;
-
+        public bool ConsiderGit { get; set; } = false;
+        public string PathToGitExecutable { get; set; } = "";
         public ProxyConfig GetByName(string proxyConfig)
         {
             return Proxies.FirstOrDefault(x => x.Name.Equals(proxyConfig));

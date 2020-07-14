@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -124,6 +125,43 @@ namespace ProxySwitcher
 
             int.TryParse(txtRetrytimeAfterEvent.Text, out var retryTime);
             Configuration.RetryTimeSec = retryTime;
+        }
+
+        private void chkGitSupport_CheckedChanged(object sender, EventArgs e)
+        {
+            Configuration.ConsiderGit = chkGitSupport.Checked;
+            if (Configuration.ConsiderGit)
+            {
+                if (!CheckGitExecutable())
+                {
+                    //enter path to git
+                    if (dlgSelectGitExecutable.ShowDialog() == DialogResult.OK)
+                    {
+                        Configuration.PathToGitExecutable = dlgSelectGitExecutable.FileName;
+                    }
+                }
+
+                if (!CheckGitExecutable())
+                {
+                    chkGitSupport.Checked = false;
+                    Configuration.ConsiderGit = false;
+                }
+            }
+        }
+
+        private bool CheckGitExecutable()
+        {
+            if (string.IsNullOrEmpty(Configuration.PathToGitExecutable))
+            {
+                return false;
+            }
+
+            if (!File.Exists(Configuration.PathToGitExecutable))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

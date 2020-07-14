@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -22,6 +23,8 @@ namespace ProxySwitcher
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
 
         private Configuration configuration;
+
+        private ProxyConfig currentProxyConfig = null;
 
         private Configuration Configuration
         {
@@ -250,38 +253,55 @@ namespace ProxySwitcher
         private void Button_Click(object sender, EventArgs e)
         {
             var match = Configuration.GetByName(((ToolStripItem)sender).Text);
-            ApplyProxy(match);
+            ApplyProxy(match, true);
         }
 
-        private void ApplyProxy(ProxyConfig matchProxy)
+        private void ApplyProxy(ProxyConfig matchProxy, bool forceUpdate = false)
         {
-            RegistryKey registry = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", true);
-            string cmd;
-            if (string.IsNullOrEmpty(matchProxy?.Proxy.Trim()))
+            if (forceUpdate || currentProxyConfig != matchProxy)
             {
-                cmd = "winhttp reset proxy";
-                registry.SetValue("ProxyEnable", 0);
-                registry.SetValue("ProxyServer", "");
-            }
-            else
-            {
-                cmd = $"winhttp set proxy {matchProxy.Proxy}";
-                registry.SetValue("ProxyEnable", 1);
-                registry.SetValue("ProxyServer", matchProxy.Proxy);
-            }
+                RegistryKey registry =
+                    Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
+                        true);
+                string winHttpCommand;
+                List<string> gitCommands = new List<string>();
+                if (string.IsNullOrEmpty(matchProxy?.Proxy.Trim()))
+                {
+                    winHttpCommand = "winhttp reset proxy";
+                    gitCommands.Add("config --global --unset-all http.proxy");
+                    registry.SetValue("ProxyEnable", 0);
+                    registry.SetValue("ProxyServer", "");
+                }
+                else
+                {
+                    winHttpCommand = $"winhttp set proxy {matchProxy.Proxy}";
+                    gitCommands.Add($"config --global --unset-all http.proxy");
+                    gitCommands.Add($"config --global --add http.proxy http://{matchProxy.Proxy}");
+                    registry.SetValue("ProxyEnable", 1);
+                    registry.SetValue("ProxyServer", matchProxy.Proxy);
+                }
 
-            if (Configuration.ConsiderWinHTTP)
-            {
-                Process process = Process.Start("netsh", cmd);
-                process.WaitForExit();
-            }
+                if (Configuration.ConsiderWinHTTP)
+                {
+                    Process process = Process.Start("netsh", winHttpCommand);
+                    process.WaitForExit();
+                }
 
-            InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
-            InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
-            Invoke(new Action(() =>
-            {
-                FireOnConfigChanged(matchProxy);
-            }));
+                if (Configuration.ConsiderGit && !string.IsNullOrEmpty(Configuration.PathToGitExecutable))
+                {
+                    gitCommands.ForEach(x =>
+                    {
+                        Process process = Process.Start(Configuration.PathToGitExecutable, x);
+                        process.WaitForExit();
+                    });
+
+                }
+
+                InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
+                InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
+                Invoke(new Action(() => { FireOnConfigChanged(matchProxy); }));
+                currentProxyConfig = matchProxy;
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
