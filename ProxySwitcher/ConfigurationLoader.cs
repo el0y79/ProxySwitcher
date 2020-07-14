@@ -18,7 +18,7 @@ namespace ProxySwitcher
             {
                 return jsonAdapter.Restore(File.ReadAllText(fileName)) ?? new Configuration();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 Console.Out.WriteLine("xxx");
                 // ignored

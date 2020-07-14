@@ -98,7 +98,7 @@ namespace ProxySwitcher
 
                 entry = Dns.GetHostEntry(uri.Host);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 entry = null;
             }
@@ -134,7 +134,7 @@ namespace ProxySwitcher
                 EndPoint ep = remoteEndPoint.Create(address);
                 return ((IPEndPoint)ep).Address.ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -193,7 +193,7 @@ namespace ProxySwitcher
 
                     ApplyProxy(null);
                 }
-                catch (Exception exc)
+                catch (Exception)
                 {
                     //noop
                     ApplyProxy(null);
