@@ -30,6 +30,7 @@ namespace ProxySwitcher
             chkCyclicChecking.Checked = Configuration.CyclicCheck;
             chkConsiderWinHTTP.Checked = Configuration.ConsiderWinHTTP;
             txtRetrytimeAfterEvent.Text = Configuration.RetryTimeSec.ToString();
+            chkGitSupport.Checked = Configuration.ConsiderGit;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
