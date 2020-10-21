@@ -156,8 +156,10 @@ namespace ProxySwitcher
                     {
                         if (!networkInterface.Supports(NetworkInterfaceComponent.IPv4)
                             || networkInterface.OperationalStatus != OperationalStatus.Up
-                            || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                            || networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback
+                            || !networkInterface.GetIPProperties().GatewayAddresses.Any())
                         {
+
                             continue;
                         }
 
