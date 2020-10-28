@@ -51,6 +51,8 @@ namespace ProxySwitcher
             {
                 config.OwnIP = txtOwnIP.Text;
                 config.Proxy = txtProxy.Text;
+                config.BypassLocal = chkBypassLocal.Checked;
+                config.AdditionalExceptions = txtAdditionalExceptions.Text;
             }
             else
             {
@@ -58,7 +60,9 @@ namespace ProxySwitcher
                 {
                     Name = txtName.Text,
                     OwnIP = txtOwnIP.Text,
-                    Proxy = txtProxy.Text
+                    Proxy = txtProxy.Text,
+                    BypassLocal = chkBypassLocal.Checked,
+                    AdditionalExceptions = txtAdditionalExceptions.Text
                 };
                 Configuration.Proxies.Add(config);
                 UpdateDialog();
@@ -87,6 +91,8 @@ namespace ProxySwitcher
             txtName.Text = config.Name;
             txtOwnIP.Text = config.OwnIP;
             txtProxy.Text = config.Proxy;
+            chkBypassLocal.Checked = config.BypassLocal;
+            txtAdditionalExceptions.Text = config.AdditionalExceptions;
         }
 
         private void DlgSettings_FormClosing(object sender, FormClosingEventArgs e)
@@ -164,5 +170,6 @@ namespace ProxySwitcher
 
             return true;
         }
+
     }
 }

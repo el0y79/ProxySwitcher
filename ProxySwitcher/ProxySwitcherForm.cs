@@ -48,6 +48,10 @@ namespace ProxySwitcher
         public static extern bool InternetSetOption(IntPtr hInternet, int dwOption, IntPtr lpBuffer, int dwBufferLength);
         public const int INTERNET_OPTION_SETTINGS_CHANGED = 39;
         public const int INTERNET_OPTION_REFRESH = 37;
+        private const string REG_KEY_PROXYENABLE = "ProxyEnable";
+        private const string REG_KEY_PROXYSERVER = "ProxyServer";
+        private const string REG_KEY_PROXYOVERRIDE = "ProxyOverride";
+        private const string REG_VAL_PROXYOVERRIDE_LOCAL = "<local>";
 
         public ProxySwitcherForm()
         {
@@ -265,22 +269,42 @@ namespace ProxySwitcher
                 RegistryKey registry =
                     Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
                         true);
+                string bypassConfig = matchProxy.AdditionalExceptions;
+                if (!string.IsNullOrWhiteSpace(bypassConfig) && !bypassConfig.EndsWith(";") && matchProxy.BypassLocal)
+                {
+                    bypassConfig += ";";
+                }
+
+                if (matchProxy.BypassLocal)
+                {
+                    bypassConfig += REG_VAL_PROXYOVERRIDE_LOCAL;
+                }
+                
+
                 string winHttpCommand;
                 List<string> gitCommands = new List<string>();
                 if (string.IsNullOrEmpty(matchProxy?.Proxy.Trim()))
                 {
                     winHttpCommand = "winhttp reset proxy";
                     gitCommands.Add("config --global --unset-all http.proxy");
-                    registry.SetValue("ProxyEnable", 0);
-                    registry.SetValue("ProxyServer", "");
+                    registry.SetValue(REG_KEY_PROXYENABLE, 0);
+                    registry.SetValue(REG_KEY_PROXYSERVER, "");
+                    if(registry.GetValueNames().Contains(REG_KEY_PROXYOVERRIDE))
+                        registry.DeleteValue(REG_KEY_PROXYOVERRIDE);
                 }
                 else
                 {
                     winHttpCommand = $"winhttp set proxy {matchProxy.Proxy}";
+                    
                     gitCommands.Add($"config --global --unset-all http.proxy");
                     gitCommands.Add($"config --global --add http.proxy http://{matchProxy.Proxy}");
-                    registry.SetValue("ProxyEnable", 1);
-                    registry.SetValue("ProxyServer", matchProxy.Proxy);
+                    registry.SetValue(REG_KEY_PROXYENABLE, 1);
+                    registry.SetValue(REG_KEY_PROXYSERVER, matchProxy.Proxy);
+                    if (!string.IsNullOrWhiteSpace(bypassConfig))
+                    {
+                        registry.SetValue(REG_KEY_PROXYOVERRIDE, bypassConfig);
+                        winHttpCommand += $" \"{bypassConfig}\"";
+                    }
                 }
 
                 if (Configuration.ConsiderWinHTTP)

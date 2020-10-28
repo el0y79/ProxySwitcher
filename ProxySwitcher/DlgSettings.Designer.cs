@@ -46,8 +46,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtRetrytimeAfterEvent = new System.Windows.Forms.TextBox();
             this.helpTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.txtAdditionalExceptions = new System.Windows.Forms.TextBox();
             this.chkGitSupport = new System.Windows.Forms.CheckBox();
             this.dlgSelectGitExecutable = new System.Windows.Forms.OpenFileDialog();
+            this.chkBypassLocal = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lstConfigurations
@@ -57,10 +60,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstConfigurations.DisplayMember = "Name";
             this.lstConfigurations.FormattingEnabled = true;
-            this.lstConfigurations.Location = new System.Drawing.Point(8, 8);
-            this.lstConfigurations.Margin = new System.Windows.Forms.Padding(2);
+            this.lstConfigurations.ItemHeight = 20;
+            this.lstConfigurations.Location = new System.Drawing.Point(12, 12);
             this.lstConfigurations.Name = "lstConfigurations";
-            this.lstConfigurations.Size = new System.Drawing.Size(147, 212);
+            this.lstConfigurations.Size = new System.Drawing.Size(218, 484);
             this.lstConfigurations.TabIndex = 0;
             this.lstConfigurations.ValueMember = "Name";
             this.lstConfigurations.SelectedValueChanged += new System.EventHandler(this.lstConfigurations_SelectedValueChanged);
@@ -69,30 +72,27 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(173, 8);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(260, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(55, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "Name:";
             // 
             // txtName
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(214, 6);
-            this.txtName.Margin = new System.Windows.Forms.Padding(2);
+            this.txtName.Location = new System.Drawing.Point(321, 9);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(192, 20);
+            this.txtName.Size = new System.Drawing.Size(286, 26);
             this.txtName.TabIndex = 1;
             this.helpTooltip.SetToolTip(this.txtName, "Name of the proxy configuration");
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(170, 76);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Location = new System.Drawing.Point(254, 288);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(235, 22);
+            this.btnSave.Size = new System.Drawing.Size(352, 34);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -101,10 +101,9 @@
             // txtOwnIP
             // 
             this.txtOwnIP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOwnIP.Location = new System.Drawing.Point(214, 27);
-            this.txtOwnIP.Margin = new System.Windows.Forms.Padding(2);
+            this.txtOwnIP.Location = new System.Drawing.Point(321, 42);
             this.txtOwnIP.Name = "txtOwnIP";
-            this.txtOwnIP.Size = new System.Drawing.Size(192, 20);
+            this.txtOwnIP.Size = new System.Drawing.Size(286, 26);
             this.txtOwnIP.TabIndex = 2;
             this.helpTooltip.SetToolTip(this.txtOwnIP, "Regular expression to specify the local IP of the computer");
             // 
@@ -112,20 +111,18 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(167, 29);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(250, 45);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(64, 20);
             this.label2.TabIndex = 4;
             this.label2.Text = "Own IP:";
             // 
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(170, 102);
-            this.btnRemove.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRemove.Location = new System.Drawing.Point(254, 328);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(235, 22);
+            this.btnRemove.Size = new System.Drawing.Size(352, 34);
             this.btnRemove.TabIndex = 5;
             this.btnRemove.Text = "Remove";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -134,10 +131,9 @@
             // txtProxy
             // 
             this.txtProxy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProxy.Location = new System.Drawing.Point(214, 47);
-            this.txtProxy.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProxy.Location = new System.Drawing.Point(321, 72);
             this.txtProxy.Name = "txtProxy";
-            this.txtProxy.Size = new System.Drawing.Size(192, 20);
+            this.txtProxy.Size = new System.Drawing.Size(286, 26);
             this.txtProxy.TabIndex = 3;
             this.helpTooltip.SetToolTip(this.txtProxy, "Specifies the proxy to use. Should be provided \r\nin the following form: <host or " +
         "ip>:<port>");
@@ -146,10 +142,9 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(176, 49);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(264, 75);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.Size = new System.Drawing.Size(51, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Proxy:";
             // 
@@ -159,10 +154,9 @@
             this.chkAutoUpdate.AutoSize = true;
             this.chkAutoUpdate.Checked = true;
             this.chkAutoUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAutoUpdate.Location = new System.Drawing.Point(168, 134);
-            this.chkAutoUpdate.Margin = new System.Windows.Forms.Padding(2);
+            this.chkAutoUpdate.Location = new System.Drawing.Point(255, 377);
             this.chkAutoUpdate.Name = "chkAutoUpdate";
-            this.chkAutoUpdate.Size = new System.Drawing.Size(86, 17);
+            this.chkAutoUpdate.Size = new System.Drawing.Size(126, 24);
             this.chkAutoUpdate.TabIndex = 6;
             this.chkAutoUpdate.Text = "Auto Update";
             this.helpTooltip.SetToolTip(this.chkAutoUpdate, "Evaluate network change events");
@@ -173,10 +167,9 @@
             // 
             this.chkConsiderWinHTTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkConsiderWinHTTP.AutoSize = true;
-            this.chkConsiderWinHTTP.Location = new System.Drawing.Point(165, 176);
-            this.chkConsiderWinHTTP.Margin = new System.Windows.Forms.Padding(2);
+            this.chkConsiderWinHTTP.Location = new System.Drawing.Point(255, 442);
             this.chkConsiderWinHTTP.Name = "chkConsiderWinHTTP";
-            this.chkConsiderWinHTTP.Size = new System.Drawing.Size(114, 17);
+            this.chkConsiderWinHTTP.Size = new System.Drawing.Size(163, 24);
             this.chkConsiderWinHTTP.TabIndex = 9;
             this.chkConsiderWinHTTP.Text = "WinHTTP Support";
             this.chkConsiderWinHTTP.UseVisualStyleBackColor = true;
@@ -188,10 +181,9 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(283, 175);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(423, 440);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(119, 18);
+            this.label4.Size = new System.Drawing.Size(183, 30);
             this.label4.TabIndex = 11;
             this.label4.Text = "WinHTTP Support will only work \r\nwhen run as Administrator";
             // 
@@ -199,10 +191,9 @@
             // 
             this.chkCyclicChecking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkCyclicChecking.AutoSize = true;
-            this.chkCyclicChecking.Location = new System.Drawing.Point(280, 134);
-            this.chkCyclicChecking.Margin = new System.Windows.Forms.Padding(2);
+            this.chkCyclicChecking.Location = new System.Drawing.Point(427, 377);
             this.chkCyclicChecking.Name = "chkCyclicChecking";
-            this.chkCyclicChecking.Size = new System.Drawing.Size(102, 17);
+            this.chkCyclicChecking.Size = new System.Drawing.Size(145, 24);
             this.chkCyclicChecking.TabIndex = 7;
             this.chkCyclicChecking.Text = "Cyclic Checking";
             this.helpTooltip.SetToolTip(this.chkCyclicChecking, "This setting specifies to check every 10 seconds \r\nif a new proxy setting needs t" +
@@ -214,33 +205,40 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(172, 155);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(257, 409);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(123, 13);
+            this.label5.Size = new System.Drawing.Size(183, 20);
             this.label5.TabIndex = 12;
             this.label5.Text = "Retrytime after Event [s]:";
             // 
             // txtRetrytimeAfterEvent
             // 
             this.txtRetrytimeAfterEvent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtRetrytimeAfterEvent.Location = new System.Drawing.Point(298, 153);
-            this.txtRetrytimeAfterEvent.Margin = new System.Windows.Forms.Padding(2);
+            this.txtRetrytimeAfterEvent.Location = new System.Drawing.Point(446, 406);
             this.txtRetrytimeAfterEvent.Name = "txtRetrytimeAfterEvent";
-            this.txtRetrytimeAfterEvent.Size = new System.Drawing.Size(85, 20);
+            this.txtRetrytimeAfterEvent.Size = new System.Drawing.Size(126, 26);
             this.txtRetrytimeAfterEvent.TabIndex = 8;
             this.txtRetrytimeAfterEvent.Text = "10";
             this.helpTooltip.SetToolTip(this.txtRetrytimeAfterEvent, resources.GetString("txtRetrytimeAfterEvent.ToolTip"));
             this.txtRetrytimeAfterEvent.TextChanged += new System.EventHandler(this.txtRetrytimeAfterEvent_TextChanged);
             // 
+            // txtAdditionalExceptions
+            // 
+            this.txtAdditionalExceptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAdditionalExceptions.Location = new System.Drawing.Point(254, 154);
+            this.txtAdditionalExceptions.Multiline = true;
+            this.txtAdditionalExceptions.Name = "txtAdditionalExceptions";
+            this.txtAdditionalExceptions.Size = new System.Drawing.Size(352, 128);
+            this.txtAdditionalExceptions.TabIndex = 16;
+            this.helpTooltip.SetToolTip(this.txtAdditionalExceptions, resources.GetString("txtAdditionalExceptions.ToolTip"));
+            // 
             // chkGitSupport
             // 
             this.chkGitSupport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkGitSupport.AutoSize = true;
-            this.chkGitSupport.Location = new System.Drawing.Point(165, 197);
-            this.chkGitSupport.Margin = new System.Windows.Forms.Padding(2);
+            this.chkGitSupport.Location = new System.Drawing.Point(255, 472);
             this.chkGitSupport.Name = "chkGitSupport";
-            this.chkGitSupport.Size = new System.Drawing.Size(77, 17);
+            this.chkGitSupport.Size = new System.Drawing.Size(113, 24);
             this.chkGitSupport.TabIndex = 13;
             this.chkGitSupport.Text = "git Support";
             this.chkGitSupport.UseVisualStyleBackColor = true;
@@ -251,11 +249,35 @@
             this.dlgSelectGitExecutable.FileName = "git.exe";
             this.dlgSelectGitExecutable.Filter = "git Executable|git.exe";
             // 
+            // chkBypassLocal
+            // 
+            this.chkBypassLocal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkBypassLocal.AutoSize = true;
+            this.chkBypassLocal.Location = new System.Drawing.Point(255, 104);
+            this.chkBypassLocal.Name = "chkBypassLocal";
+            this.chkBypassLocal.Size = new System.Drawing.Size(201, 24);
+            this.chkBypassLocal.TabIndex = 14;
+            this.chkBypassLocal.Text = "Bypass local addresses";
+            this.chkBypassLocal.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(255, 131);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(275, 20);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Additional exceptions [separated by ;]:";
+            // 
             // DlgSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 227);
+            this.ClientSize = new System.Drawing.Size(627, 520);
+            this.Controls.Add(this.txtAdditionalExceptions);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.chkBypassLocal);
             this.Controls.Add(this.chkGitSupport);
             this.Controls.Add(this.txtRetrytimeAfterEvent);
             this.Controls.Add(this.label5);
@@ -273,8 +295,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lstConfigurations);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(434, 250);
+            this.MinimumSize = new System.Drawing.Size(649, 576);
             this.Name = "DlgSettings";
             this.Text = "DlgSettings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DlgSettings_FormClosing);
@@ -303,5 +324,8 @@
         private System.Windows.Forms.ToolTip helpTooltip;
         private System.Windows.Forms.CheckBox chkGitSupport;
         private System.Windows.Forms.OpenFileDialog dlgSelectGitExecutable;
+        private System.Windows.Forms.CheckBox chkBypassLocal;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtAdditionalExceptions;
     }
 }
