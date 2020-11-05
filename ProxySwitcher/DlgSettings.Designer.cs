@@ -58,6 +58,7 @@
             this.lstConfigurations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstConfigurations.DisplayMember = "Name";
             this.lstConfigurations.FormattingEnabled = true;
             this.lstConfigurations.ItemHeight = 20;
             this.lstConfigurations.Location = new System.Drawing.Point(12, 12);
@@ -229,7 +230,8 @@
             this.txtAdditionalExceptions.Name = "txtAdditionalExceptions";
             this.txtAdditionalExceptions.Size = new System.Drawing.Size(352, 128);
             this.txtAdditionalExceptions.TabIndex = 16;
-            this.helpTooltip.SetToolTip(this.txtAdditionalExceptions, resources.GetString("txtAdditionalExceptions.ToolTip"));
+            this.helpTooltip.SetToolTip(this.txtAdditionalExceptions, "Allows specification of addresses for which the proxy is to be bypassed. Entries " +
+        "are separated by semicolon.");
             // 
             // chkGitSupport
             // 
@@ -240,6 +242,7 @@
             this.chkGitSupport.Size = new System.Drawing.Size(113, 24);
             this.chkGitSupport.TabIndex = 13;
             this.chkGitSupport.Text = "git Support";
+            this.helpTooltip.SetToolTip(this.chkGitSupport, "Specifies if the proxy is also to be updated in git configuration");
             this.chkGitSupport.UseVisualStyleBackColor = true;
             this.chkGitSupport.CheckedChanged += new System.EventHandler(this.chkGitSupport_CheckedChanged);
             // 
@@ -257,6 +260,7 @@
             this.chkBypassLocal.Size = new System.Drawing.Size(201, 24);
             this.chkBypassLocal.TabIndex = 14;
             this.chkBypassLocal.Text = "Bypass local addresses";
+            this.helpTooltip.SetToolTip(this.chkBypassLocal, "Specifies that the proxy is to be bypassed for addresses in local networks");
             this.chkBypassLocal.UseVisualStyleBackColor = true;
             // 
             // label6

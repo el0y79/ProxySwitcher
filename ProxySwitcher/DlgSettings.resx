@@ -120,17 +120,7 @@
   <metadata name="helpTooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="helpTooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="txtRetrytimeAfterEvent.ToolTip" xml:space="preserve">
-    <value>This setting specifies for how long after a 
-network change was detected, should the 
-ProxySwitcher attempt to determine the 
-correct proxy configuration. It is only available
-if cyclic checking is deactivated.</value>
-  </data>
-  <data name="txtAdditionalExceptions.ToolTip" xml:space="preserve">
     <value>This setting specifies for how long after a 
 network change was detected, should the 
 ProxySwitcher attempt to determine the 
