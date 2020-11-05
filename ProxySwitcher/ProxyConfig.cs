@@ -14,7 +14,12 @@
 
         public override bool Equals(object obj)
         {
-            return Name.Equals(obj);
+            var other = obj as ProxyConfig;
+            if (other == null)
+            {
+                return false;
+            }
+            return Name.Equals(other.Name);
         }
 
         public override int GetHashCode()
