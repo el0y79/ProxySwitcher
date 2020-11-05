@@ -14,10 +14,10 @@
     <ROW Property="ARPPRODUCTICON" Value="icons8internet64.exe" Type="8"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="el0y@mwoelke"/>
-    <ROW Property="ProductCode" Value="1033:{74BC6617-4123-4DE7-899A-64D5B189B7CF} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{E39BB48E-20B0-4AE9-B508-8D6E09A6FC7A} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Proxy Switcher"/>
-    <ROW Property="ProductVersion" Value="1.0.6" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.7" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{1CEDB917-C8EB-4430-B8A3-FE5FEA01483A}"/>
