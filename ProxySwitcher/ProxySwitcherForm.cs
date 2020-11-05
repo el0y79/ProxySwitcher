@@ -223,7 +223,7 @@ namespace ProxySwitcher
 
         private void mnuSettings_Click(object sender, EventArgs e)
         {
-            DlgSettings settings = new DlgSettings(Configuration);
+            DlgSettings settings = new DlgSettings(Configuration, ()=>currentProxyConfig);
             settings.ShowDialog();
             Configuration = settings.Configuration;
             configurationLoader.SaveConfiguration(Configuration);

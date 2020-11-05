@@ -7,5 +7,19 @@
         public string Proxy { get; set; }
         public bool BypassLocal { get; set; }
         public string AdditionalExceptions { get; set; }
+        public override string ToString()
+        {
+            return Name.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Name.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

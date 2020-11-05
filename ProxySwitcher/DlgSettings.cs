@@ -8,17 +8,19 @@ namespace ProxySwitcher
     public partial class DlgSettings : Form
     {
         public Configuration Configuration { get; private set; }
-        public DlgSettings(Configuration configuration)
+        private Func<ProxyConfig> currentProxyConfig;
+        public DlgSettings(Configuration configuration, Func<ProxyConfig> currentProxyConfig)
         {
             InitializeComponent();
             Configuration = configuration;
+            this.currentProxyConfig = currentProxyConfig;
             UpdateDialog();
         }
 
         private void UpdateDialog()
         {
             lstConfigurations.Items.Clear();
-            Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(x));
+            Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(new ProxyConfigWrapper(x, currentProxyConfig)));
             chkAutoUpdate.Checked = Configuration.AutoUpdate;
             chkCyclicChecking.Checked = Configuration.CyclicCheck;
             chkConsiderWinHTTP.Checked = Configuration.ConsiderWinHTTP;
@@ -69,23 +71,23 @@ namespace ProxySwitcher
                 return;
             }
 
-            ProxyConfig config = (ProxyConfig)lstConfigurations.SelectedItem;
-            Configuration.Proxies.Remove(config);
+            ProxyConfigWrapper config = (ProxyConfigWrapper)lstConfigurations.SelectedItem;
+            Configuration.Proxies.Remove(config.Content);
             lstConfigurations.Items.Remove(config);
         }
 
         private void lstConfigurations_SelectedValueChanged(object sender, EventArgs e)
         {
-            ProxyConfig config = (ProxyConfig)lstConfigurations.SelectedItem;
+            ProxyConfigWrapper config = (ProxyConfigWrapper)lstConfigurations.SelectedItem;
             if (config == null)
             {
                 return;
             }
-            txtName.Text = config.Name;
-            txtOwnIP.Text = config.OwnIP;
-            txtProxy.Text = config.Proxy;
-            chkBypassLocal.Checked = config.BypassLocal;
-            txtAdditionalExceptions.Text = config.AdditionalExceptions;
+            txtName.Text = config.Content.Name;
+            txtOwnIP.Text = config.Content.OwnIP;
+            txtProxy.Text = config.Content.Proxy;
+            chkBypassLocal.Checked = config.Content.BypassLocal;
+            txtAdditionalExceptions.Text = config.Content.AdditionalExceptions;
         }
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)
@@ -93,7 +95,7 @@ namespace ProxySwitcher
             Configuration.AutoUpdate = chkAutoUpdate.Checked;
             chkCyclicChecking.Enabled = chkAutoUpdate.Checked;
             txtRetrytimeAfterEvent.Enabled = chkAutoUpdate.Checked;
-            if(!chkAutoUpdate.Checked)
+            if (!chkAutoUpdate.Checked)
             {
                 chkCyclicChecking.Checked = false;
             }
@@ -159,5 +161,37 @@ namespace ProxySwitcher
             return true;
         }
 
+    }
+
+    class ProxyConfigWrapper
+    {
+        public ProxyConfig Content { get; }
+        private Func<ProxyConfig> currentProxyConfig;
+        public ProxyConfigWrapper(ProxyConfig content, Func<ProxyConfig> currentProxyConfig)
+        {
+            Content = content;
+            this.currentProxyConfig = currentProxyConfig;
+        }
+
+        public override string ToString()
+        {
+            string result = Content.ToString();
+            if (Content.Equals(currentProxyConfig.Invoke()))
+            {
+                result += " [active]";
+            }
+
+            return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Content.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Content.GetHashCode();
+        }
     }
 }
