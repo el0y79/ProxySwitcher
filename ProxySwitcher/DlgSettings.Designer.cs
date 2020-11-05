@@ -298,7 +298,6 @@
             this.MinimumSize = new System.Drawing.Size(649, 576);
             this.Name = "DlgSettings";
             this.Text = "DlgSettings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DlgSettings_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

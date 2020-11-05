@@ -8,16 +8,10 @@ namespace ProxySwitcher
     public partial class DlgSettings : Form
     {
         public Configuration Configuration { get; private set; }
-        ConfigurationLoader loader = new ConfigurationLoader();
-        public DlgSettings()
+        public DlgSettings(Configuration configuration)
         {
             InitializeComponent();
-            LoadConfiguration();
-        }
-
-        private void LoadConfiguration()
-        {
-            Configuration=loader.LoadConfiguration();
+            Configuration = configuration;
             UpdateDialog();
         }
 
@@ -25,7 +19,6 @@ namespace ProxySwitcher
         {
             lstConfigurations.Items.Clear();
             Configuration.Proxies.ForEach(x => lstConfigurations.Items.Add(x));
-            
             chkAutoUpdate.Checked = Configuration.AutoUpdate;
             chkCyclicChecking.Checked = Configuration.CyclicCheck;
             chkConsiderWinHTTP.Checked = Configuration.ConsiderWinHTTP;
@@ -93,11 +86,6 @@ namespace ProxySwitcher
             txtProxy.Text = config.Proxy;
             chkBypassLocal.Checked = config.BypassLocal;
             txtAdditionalExceptions.Text = config.AdditionalExceptions;
-        }
-
-        private void DlgSettings_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            loader.SaveConfiguration(Configuration);
         }
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)

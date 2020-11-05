@@ -223,9 +223,10 @@ namespace ProxySwitcher
 
         private void mnuSettings_Click(object sender, EventArgs e)
         {
-            DlgSettings settings = new DlgSettings();
+            DlgSettings settings = new DlgSettings(Configuration);
             settings.ShowDialog();
             Configuration = settings.Configuration;
+            configurationLoader.SaveConfiguration(Configuration);
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
