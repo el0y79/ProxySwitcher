@@ -5,6 +5,7 @@
         public string Name { get; set; }
         public string OwnIP { get; set; }
         public string Proxy { get; set; }
+        public string DefaultPrinter { get; set; }
         public bool BypassLocal { get; set; }
         public string AdditionalExceptions { get; set; }
         public override string ToString()

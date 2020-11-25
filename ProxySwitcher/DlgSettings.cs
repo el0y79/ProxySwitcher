@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ namespace ProxySwitcher
 {
     public partial class DlgSettings : Form
     {
+        private const string NO_PRINTER = "<no printer>";
         public Configuration Configuration { get; private set; }
         private Func<ProxyConfig> currentProxyConfig;
         public DlgSettings(Configuration configuration, Func<ProxyConfig> currentProxyConfig)
@@ -14,7 +16,21 @@ namespace ProxySwitcher
             InitializeComponent();
             Configuration = configuration;
             this.currentProxyConfig = currentProxyConfig;
+            LoadPrinters();
             UpdateDialog();
+        }
+
+        private void LoadPrinters()
+        {
+            cmbDefaultPrinter.Items.Clear();
+            cmbDefaultPrinter.Items.Add(NO_PRINTER);
+
+            foreach (var item in PrinterSettings.InstalledPrinters)
+            {
+                cmbDefaultPrinter.Items.Add(item.ToString());
+            }
+
+            cmbDefaultPrinter.SelectedItem = NO_PRINTER.ToString();
         }
 
         private void UpdateDialog()
@@ -48,6 +64,8 @@ namespace ProxySwitcher
                 config.Proxy = txtProxy.Text;
                 config.BypassLocal = chkBypassLocal.Checked;
                 config.AdditionalExceptions = txtAdditionalExceptions.Text;
+                config.DefaultPrinter = cmbDefaultPrinter.SelectedItem.Equals(NO_PRINTER) ? 
+                    null : cmbDefaultPrinter.SelectedItem.ToString();
             }
             else
             {
@@ -57,8 +75,10 @@ namespace ProxySwitcher
                     OwnIP = txtOwnIP.Text,
                     Proxy = txtProxy.Text,
                     BypassLocal = chkBypassLocal.Checked,
-                    AdditionalExceptions = txtAdditionalExceptions.Text
-                };
+                    AdditionalExceptions = txtAdditionalExceptions.Text,
+                    DefaultPrinter = cmbDefaultPrinter.SelectedItem.Equals(NO_PRINTER) ? 
+                        null : cmbDefaultPrinter.SelectedItem.ToString()
+            };
                 Configuration.Proxies.Add(config);
                 UpdateDialog();
             }
@@ -88,6 +108,9 @@ namespace ProxySwitcher
             txtProxy.Text = config.Content.Proxy;
             chkBypassLocal.Checked = config.Content.BypassLocal;
             txtAdditionalExceptions.Text = config.Content.AdditionalExceptions;
+            cmbDefaultPrinter.SelectedItem = config.Content.DefaultPrinter != null && 
+                cmbDefaultPrinter.Items.Contains(config.Content.DefaultPrinter) ?
+                config.Content.DefaultPrinter : NO_PRINTER;
         }
 
         private void chkAutoUpdate_CheckedChanged(object sender, EventArgs e)

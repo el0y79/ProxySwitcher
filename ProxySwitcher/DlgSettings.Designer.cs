@@ -48,9 +48,11 @@
             this.helpTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.txtAdditionalExceptions = new System.Windows.Forms.TextBox();
             this.chkGitSupport = new System.Windows.Forms.CheckBox();
-            this.dlgSelectGitExecutable = new System.Windows.Forms.OpenFileDialog();
             this.chkBypassLocal = new System.Windows.Forms.CheckBox();
+            this.dlgSelectGitExecutable = new System.Windows.Forms.OpenFileDialog();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cmbDefaultPrinter = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lstConfigurations
@@ -63,7 +65,7 @@
             this.lstConfigurations.ItemHeight = 20;
             this.lstConfigurations.Location = new System.Drawing.Point(12, 12);
             this.lstConfigurations.Name = "lstConfigurations";
-            this.lstConfigurations.Size = new System.Drawing.Size(218, 484);
+            this.lstConfigurations.Size = new System.Drawing.Size(218, 524);
             this.lstConfigurations.TabIndex = 0;
             this.lstConfigurations.ValueMember = "Name";
             this.lstConfigurations.SelectedValueChanged += new System.EventHandler(this.lstConfigurations_SelectedValueChanged);
@@ -90,7 +92,7 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(254, 288);
+            this.btnSave.Location = new System.Drawing.Point(254, 342);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(352, 34);
             this.btnSave.TabIndex = 4;
@@ -120,7 +122,7 @@
             // btnRemove
             // 
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(254, 328);
+            this.btnRemove.Location = new System.Drawing.Point(254, 382);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(352, 34);
             this.btnRemove.TabIndex = 5;
@@ -154,7 +156,7 @@
             this.chkAutoUpdate.AutoSize = true;
             this.chkAutoUpdate.Checked = true;
             this.chkAutoUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkAutoUpdate.Location = new System.Drawing.Point(255, 377);
+            this.chkAutoUpdate.Location = new System.Drawing.Point(254, 422);
             this.chkAutoUpdate.Name = "chkAutoUpdate";
             this.chkAutoUpdate.Size = new System.Drawing.Size(126, 24);
             this.chkAutoUpdate.TabIndex = 6;
@@ -167,7 +169,7 @@
             // 
             this.chkConsiderWinHTTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkConsiderWinHTTP.AutoSize = true;
-            this.chkConsiderWinHTTP.Location = new System.Drawing.Point(255, 442);
+            this.chkConsiderWinHTTP.Location = new System.Drawing.Point(254, 487);
             this.chkConsiderWinHTTP.Name = "chkConsiderWinHTTP";
             this.chkConsiderWinHTTP.Size = new System.Drawing.Size(163, 24);
             this.chkConsiderWinHTTP.TabIndex = 9;
@@ -181,7 +183,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(423, 440);
+            this.label4.Location = new System.Drawing.Point(422, 485);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(183, 30);
             this.label4.TabIndex = 11;
@@ -191,7 +193,7 @@
             // 
             this.chkCyclicChecking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkCyclicChecking.AutoSize = true;
-            this.chkCyclicChecking.Location = new System.Drawing.Point(427, 377);
+            this.chkCyclicChecking.Location = new System.Drawing.Point(426, 422);
             this.chkCyclicChecking.Name = "chkCyclicChecking";
             this.chkCyclicChecking.Size = new System.Drawing.Size(145, 24);
             this.chkCyclicChecking.TabIndex = 7;
@@ -205,7 +207,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(257, 409);
+            this.label5.Location = new System.Drawing.Point(256, 454);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(183, 20);
             this.label5.TabIndex = 12;
@@ -214,7 +216,7 @@
             // txtRetrytimeAfterEvent
             // 
             this.txtRetrytimeAfterEvent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtRetrytimeAfterEvent.Location = new System.Drawing.Point(446, 406);
+            this.txtRetrytimeAfterEvent.Location = new System.Drawing.Point(445, 451);
             this.txtRetrytimeAfterEvent.Name = "txtRetrytimeAfterEvent";
             this.txtRetrytimeAfterEvent.Size = new System.Drawing.Size(126, 26);
             this.txtRetrytimeAfterEvent.TabIndex = 8;
@@ -237,7 +239,7 @@
             // 
             this.chkGitSupport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkGitSupport.AutoSize = true;
-            this.chkGitSupport.Location = new System.Drawing.Point(255, 472);
+            this.chkGitSupport.Location = new System.Drawing.Point(254, 517);
             this.chkGitSupport.Name = "chkGitSupport";
             this.chkGitSupport.Size = new System.Drawing.Size(113, 24);
             this.chkGitSupport.TabIndex = 13;
@@ -245,11 +247,6 @@
             this.helpTooltip.SetToolTip(this.chkGitSupport, "Specifies if the proxy is also to be updated in git configuration");
             this.chkGitSupport.UseVisualStyleBackColor = true;
             this.chkGitSupport.CheckedChanged += new System.EventHandler(this.chkGitSupport_CheckedChanged);
-            // 
-            // dlgSelectGitExecutable
-            // 
-            this.dlgSelectGitExecutable.FileName = "git.exe";
-            this.dlgSelectGitExecutable.Filter = "git Executable|git.exe";
             // 
             // chkBypassLocal
             // 
@@ -263,6 +260,11 @@
             this.helpTooltip.SetToolTip(this.chkBypassLocal, "Specifies that the proxy is to be bypassed for addresses in local networks");
             this.chkBypassLocal.UseVisualStyleBackColor = true;
             // 
+            // dlgSelectGitExecutable
+            // 
+            this.dlgSelectGitExecutable.FileName = "git.exe";
+            this.dlgSelectGitExecutable.Filter = "git Executable|git.exe";
+            // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -273,11 +275,30 @@
             this.label6.TabIndex = 15;
             this.label6.Text = "Additional exceptions [separated by ;]:";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(251, 285);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(115, 20);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "Default Printer:";
+            // 
+            // cmbDefaultPrinter
+            // 
+            this.cmbDefaultPrinter.FormattingEnabled = true;
+            this.cmbDefaultPrinter.Location = new System.Drawing.Point(254, 308);
+            this.cmbDefaultPrinter.Name = "cmbDefaultPrinter";
+            this.cmbDefaultPrinter.Size = new System.Drawing.Size(352, 28);
+            this.cmbDefaultPrinter.TabIndex = 18;
+            // 
             // DlgSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(627, 520);
+            this.ClientSize = new System.Drawing.Size(627, 584);
+            this.Controls.Add(this.cmbDefaultPrinter);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAdditionalExceptions);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.chkBypassLocal);
@@ -329,5 +350,7 @@
         private System.Windows.Forms.CheckBox chkBypassLocal;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtAdditionalExceptions;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cmbDefaultPrinter;
     }
 }

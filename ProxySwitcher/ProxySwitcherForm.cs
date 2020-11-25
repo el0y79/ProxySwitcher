@@ -20,6 +20,9 @@ namespace ProxySwitcher
 {
     public partial class ProxySwitcherForm : Form
     {
+        [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool SetDefaultPrinter(string printerName);
+
         private ConfigurationLoader configurationLoader = new ConfigurationLoader();
 
         private Configuration configuration;
@@ -270,6 +273,7 @@ namespace ProxySwitcher
                 RegistryKey registry =
                     Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
                         true);
+
                 string bypassConfig = matchProxy.AdditionalExceptions;
                 if (!string.IsNullOrWhiteSpace(bypassConfig) && !bypassConfig.EndsWith(";") && matchProxy.BypassLocal)
                 {
@@ -280,8 +284,9 @@ namespace ProxySwitcher
                 {
                     bypassConfig += REG_VAL_PROXYOVERRIDE_LOCAL;
                 }
-                
 
+                string defaultPrinter = matchProxy.DefaultPrinter;
+                
                 string winHttpCommand;
                 List<string> gitCommands = new List<string>();
                 if (string.IsNullOrEmpty(matchProxy?.Proxy.Trim()))
@@ -322,6 +327,11 @@ namespace ProxySwitcher
                         process.WaitForExit();
                     });
 
+                }
+
+                if (defaultPrinter != null)
+                {
+                    SetDefaultPrinter(defaultPrinter);
                 }
 
                 InternetSetOption(IntPtr.Zero, INTERNET_OPTION_SETTINGS_CHANGED, IntPtr.Zero, 0);
