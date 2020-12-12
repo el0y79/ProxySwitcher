@@ -50,6 +50,7 @@
     <ROW File="ProxySwitcher.exe" Component_="ProxySwitcher.exe" FileName="PROXYS~1.EXE|ProxySwitcher.exe" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.exe" SelfReg="false" DigSign="true"/>
     <ROW File="ProxySwitcher.exe.config" Component_="configurations.json" FileName="PROXYS~1.CON|ProxySwitcher.exe.config" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.exe.config" SelfReg="false"/>
     <ROW File="ProxySwitcher.pdb" Component_="ProxySwitcher.exe" FileName="PROXYS~1.PDB|ProxySwitcher.pdb" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.pdb" SelfReg="false"/>
+    <ROW File="LICENSE" Component_="configurations.json" FileName="LICENSE" Attributes="0" SourcePath="..\LICENSE" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>

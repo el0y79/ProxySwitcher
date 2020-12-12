@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxySwitcher", "ProxySwitc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F372804A-31AA-4259-A000-E1189082E9B9}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
 		Setup\Proxy Switcher PSI.aip = Setup\Proxy Switcher PSI.aip
 		Setup\Proxy Switcher.aip = Setup\Proxy Switcher.aip
 	EndProjectSection
