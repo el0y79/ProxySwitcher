@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="16.1" version="17.7" Modules="simple" RootPath="." Language="en" Id="{6220C1A0-A1CF-479C-92C8-33A840CEF7CD}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="16.1" version="16.1" Modules="simple" RootPath="." Language="en" Id="{6220C1A0-A1CF-479C-92C8-33A840CEF7CD}">
+  <COMPONENT cid="caphyon.advinst.msicomp.ProjectOptionsComponent">
+    <ROW Name="HiddenItems" Value="AppXProductDetailsComponent;AppXDependenciesComponent;AppXAppDetailsComponent;AppXVisualAssetsComponent;AppXCapabilitiesComponent;AppXAppDeclarationsComponent;AppXUriRulesComponent;DigCertStoreComponent;MsiAssemblyComponent;MsiClassComponent;MsiServInstComponent;MsiExtComponent;TilesComponent;MsiOrgComponent;FixupComponent;MsiThemeComponent;BackgroundImagesComponent;UpdaterComponent;SerValComponent;MsiInstExSeqComponent;DictionaryComponent;MsiAppSearchComponent;MsiOdbcDataSrcComponent;CPLAppletComponent;ActSyncAppComponent;PreReqComponent;WebApplicationsComponent;MsiJavaComponent;MsiDriverPackagesComponent;UserAccountsComponent;ScheduledTasksComponent;SqlConnectionComponent;AutorunComponent;FirewallExceptionComponent;GameUxComponent;MsiDirectEditorComponent;SharePointSlnComponent;SilverlightSlnComponent;MultipleInstancesComponent;SccmComponent;TilesComponent"/>
+  </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_PREDEF_LCONDS_PROPS" Value="AI_DETECTED_DOTNET_VERSION"/>
@@ -9,13 +12,12 @@
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="icons8internet64.exe" Type="8"/>
-    <ROW Property="ARPURLINFOABOUT" Value="https://github.com/el0y79/ProxySwitcher"/>
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="el0y@mwoelke"/>
     <ROW Property="ProductCode" Value="1033:{9CF03F77-4375-42D4-B18C-785EBAA79F89} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Proxy Switcher"/>
-    <ROW Property="ProductVersion" Value="1.0.8.0" Type="32" TargetFile="ProxySwitcher.exe"/>
+    <ROW Property="ProductVersion" Value="1.0.8" Type="32"/>
     <ROW Property="RUNAPPLICATION" Value="1" Type="4"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{1CEDB917-C8EB-4430-B8A3-FE5FEA01483A}"/>
@@ -25,11 +27,12 @@
     <ROW Property="WindowsTypeNT40Display" MultiBuildValue="DefaultBuild:Windows NT 4.0" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT50" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT50Display" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
-    <ROW Property="WindowsTypeNT5X" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
-    <ROW Property="WindowsTypeNT5XDisplay" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT5X" MultiBuildValue="DefaultBuild:Windows XP/2003 RTM, Windows XP/2003 SP1, Windows XP SP2 x86" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT5XDisplay" MultiBuildValue="DefaultBuild:Windows XP/2003 RTM, Windows XP/2003 SP1, Windows XP SP2 x86" ValueLocId="-"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="AppDataFolder" Directory_Parent="TARGETDIR" DefaultDir="APPDAT~1|AppDataFolder" IsPseudoRoot="1"/>
     <ROW Directory="ProgramMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="PROGRA~1|ProgramMenuFolder" IsPseudoRoot="1"/>
     <ROW Directory="StartupFolder" Directory_Parent="TARGETDIR" DefaultDir="STARTU~1|StartupFolder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
@@ -39,7 +42,8 @@
     <ROW Component="Newtonsoft.Json.dll" ComponentId="{8946071A-3F99-4848-AA83-2E67C3C10B15}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
     <ROW Component="ProductInformation" ComponentId="{E48D4A48-B237-4853-B629-E45484E2FF6C}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="ProxySwitcher.exe" ComponentId="{13FE161C-C7E7-4FD4-AFD6-199B6E185950}" Directory_="APPDIR" Attributes="0" KeyPath="ProxySwitcher.exe"/>
-    <ROW Component="configurations.json" ComponentId="{A7F4A1E1-96BC-4A02-9F42-985693BF2AD7}" Directory_="APPDIR" Attributes="0" KeyPath="ProxySwitcher.exe.config" Type="0"/>
+    <ROW Component="configurations.json" ComponentId="{A7F4A1E1-96BC-4A02-9F42-985693BF2AD7}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.xml" Type="0"/>
+    <ROW Component="configurations.json_1" ComponentId="{F931D6AD-647A-4A99-A9CC-98C24B586F05}" Directory_="AppDataFolder" Attributes="0" KeyPath="configurations.json_1" Type="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
@@ -47,9 +51,11 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
     <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\Newtonsoft.Json.dll" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.xml" Component_="configurations.json" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\Newtonsoft.Json.xml" SelfReg="false"/>
     <ROW File="ProxySwitcher.exe" Component_="ProxySwitcher.exe" FileName="PROXYS~1.EXE|ProxySwitcher.exe" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.exe" SelfReg="false" DigSign="true"/>
     <ROW File="ProxySwitcher.exe.config" Component_="configurations.json" FileName="PROXYS~1.CON|ProxySwitcher.exe.config" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.exe.config" SelfReg="false"/>
     <ROW File="ProxySwitcher.pdb" Component_="ProxySwitcher.exe" FileName="PROXYS~1.PDB|ProxySwitcher.pdb" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\ProxySwitcher.pdb" SelfReg="false"/>
+    <ROW File="configurations.json_1" Component_="configurations.json_1" FileName="CONFIG~1.JSO|configurations.json" Attributes="0" SourcePath="..\ProxySwitcher\bin\Debug\configurations.json" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -131,6 +137,7 @@
     <ROW Feature_="MainFeature" Component_="configurations.json"/>
     <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
     <ROW Feature_="MainFeature" Component_="ProxySwitcher.exe"/>
+    <ROW Feature_="MainFeature" Component_="configurations.json_1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="icons8internet64.exe" SourcePath="..\ProxySwitcher\icons8-internet-64.ico" Index="0"/>
@@ -152,9 +159,9 @@
     <ROW Action="AI_DetectSoftware" Sequence="101"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
-    <ROW Condition="((VersionNT &lt;&gt; 501) AND (VersionNT &lt;&gt; 502))" Description="[ProductName] cannot be installed on [WindowsTypeNT5XDisplay]." DescriptionLocId="AI.LaunchCondition.NoNT5X" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 400)" Description="[ProductName] cannot be installed on [WindowsTypeNT40Display]." DescriptionLocId="AI.LaunchCondition.NoNT40" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 500)" Description="[ProductName] cannot be installed on [WindowsTypeNT50Display]." DescriptionLocId="AI.LaunchCondition.NoNT50" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="(VersionNT64 OR ((VersionNT &lt;&gt; 501) OR (ServicePackLevel = 3))) AND ((VersionNT &lt;&gt; 502) OR (ServicePackLevel = 2))" Description="[ProductName] cannot be installed on [WindowsTypeNT5XDisplay]." DescriptionLocId="AI.LaunchCondition.NoNT5X" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="AI_DETECTED_DOTNET_VERSION &gt;= AI_REQUIRED_DOTNET_VERSION" Description="[ProductName] cannot be installed on systems with .NET Framework version lower than [AI_REQUIRED_DOTNET_DISPLAY]." DescriptionLocId="AI.LaunchCondition.DotNET" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]." DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
   </COMPONENT>

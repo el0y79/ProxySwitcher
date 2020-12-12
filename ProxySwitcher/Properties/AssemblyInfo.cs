@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ProxySwitcher")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("small tool for switching the windows system proxy")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("el0y@mwoelke")]
 [assembly: AssemblyProduct("ProxySwitcher")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
