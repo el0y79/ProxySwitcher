@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-
-namespace TelegramUtils
+namespace ProxySwitcher
 {
     public class JsonAdapter<T> where T : class
     {
